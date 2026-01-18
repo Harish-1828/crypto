@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Playfair Cipher</title>
+</head>
+<body>
+<div class="top-nav">
+        <a class="home-btn" href="/">Home</a>
+    </div>
+<h2>Playfair Cipher</h2>
+
+<form method="post" id="keyForm">
+    <label for="key">Enter Key:</label>
+    <input type="text" id="key" name="key" placeholder="Enter Key" value="{{ key }}" required>
+    <button type="submit" name="mode" value="show_matrix">Show Matrix</button>
+    <button type="button" onclick="changeKey()">Change Key</button>
+</form>
+
+{% if matrix %}
+<h3>Key Matrix</h3>
+<table class="matrix">
+    {% for row in matrix %}
+    <tr>
+        {% for ch in row %}
+        <td>{{ ch.upper() }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+
+<form method="post">
+    <input type="hidden" name="key" value="{{ key }}">
+    <label for="text">Enter Text:</label>
+    <textarea id="text" name="text" placeholder="Enter Text" required></textarea>
+    
+    <button name="mode" value="encrypt">Encrypt</button>
+    <button name="mode" value="decrypt">Decrypt</button>
+</form>
+
+{% if result %}
+<p><strong>Result:</strong> {{ result }}</p>
+{% endif %}
+{% endif %}
+
+<br>
+<a href="/">Back</a>
+
+<script>
+function changeKey() {
+    document.getElementById('key').value = '';
+    document.getElementById('key').focus();
+    // Submit form to clear matrix
+    window.location.href = '/playfair';
+}
+</script>
+</body>
+</html>

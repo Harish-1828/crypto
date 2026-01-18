@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* ---------- Global ---------- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+    text-align: center;
+}
+
+/* ---------- Headings ---------- */
+h1 {
+    margin-top: 40px;
+    font-size: 32px;
+    color: #2c3e50;
+}
+
+h2 {
+    margin-top: 30px;
+    font-size: 26px;
+    color: #34495e;
+}
+
+/* ---------- Container ---------- */
+.menu {
+    margin-top: 50px;
+}
+
+form {
+    background: #ffffff;
+    width: 70%;
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* ---------- Inputs ---------- */
+textarea,
+input[type="text"] {
+    width: 90%;
+    font-size: 16px;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+textarea:focus,
+input:focus {
+    border-color: #3498db;
+}
+
+/* ---------- Buttons ---------- */
+button {
+    font-size: 16px;
+    padding: 10px 22px;
+    margin: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+/* Encrypt Button */
+button[value="encrypt"] {
+    background-color: #27ae60;
+}
+
+button[value="encrypt"]:hover {
+    background-color: #219150;
+}
+
+/* Decrypt Button */
+button[value="decrypt"] {
+    background-color: #e67e22;
+}
+
+button[value="decrypt"]:hover {
+    background-color: #cf6d17;
+}
+
+/* ---------- Menu Buttons ---------- */
+.menu a {
+    display: block;
+    width: 320px;
+    margin: 15px auto;
+    padding: 15px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+    border-radius: 8px;
+    color: #ffffff;
+}
+
+
+
+
+
+/* ---------- Result ---------- */
+p {
+    font-size: 17px;
+    margin-top: 15px;
+}
+
+p strong {
+    color: #2c3e50;
+}
+
+/* ---------- Back Link ---------- */
+a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #3498db;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+/* ---------- Playfair Matrix ---------- */
+.matrix {
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+.matrix td {
+    width: 45px;
+    height: 45px;
+    border: 2px solid #2c3e50;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    background: #ecf0f1;
+}
+
+        </style>
+</head>
+<body>
+<h1>Cryptography Algorithms</h1>
+
+<div class="menu">
+    <a href="/playfair">Playfair Cipher</a>
+    <a href="/affine">Affine Cipher</a>
+    <a href="/vigenere">Vigenère Cipher</a>
+</div>
+</body>
+</html>

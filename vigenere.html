@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="top-nav">
+        <a class="home-btn" href="/">Home</a>
+    </div>
+<h2>Vigenère Cipher</h2>
+
+<form method="post">
+    <textarea name="text" placeholder="Enter Text"></textarea>
+
+    <button name="mode" value="encrypt">Encrypt</button>
+    <button name="mode" value="decrypt">Decrypt</button>
+</form>
+
+<p>Result: {{ result }}</p>
+<a href="/">Back</a>
+</body>
+</html>
