@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* ---------- Global ---------- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+    text-align: center;
+}
+
+/* ---------- Headings ---------- */
+h1 {
+    margin-top: 40px;
+    font-size: 32px;
+    color: #2c3e50;
+}
+
+h2 {
+    margin-top: 30px;
+    font-size: 26px;
+    color: #34495e;
+}
+
+/* ---------- Container ---------- */
+form {
+    background: #ffffff;
+    width: 70%;
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* ---------- Inputs ---------- */
+input[type="number"] {
+    width: 90%;
+    font-size: 16px;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+input:focus {
+    border-color: #3498db;
+}
+
+/* ---------- Buttons ---------- */
+button {
+    font-size: 16px;
+    padding: 10px 22px;
+    margin: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+button[value="test"] {
+    background-color: #27ae60;
+}
+
+button[value="test"]:hover {
+    background-color: #219150;
+}
+
+button[value="demo"] {
+    background-color: #3498db;
+}
+
+button[value="demo"]:hover {
+    background-color: #2980b9;
+}
+
+/* ---------- Result ---------- */
+.result {
+    background: #ffffff;
+    width: 70%;
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    text-align: left;
+}
+
+.result h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.result-value {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 6px;
+    background: #ecf0f1;
+}
+
+.result-value.prime {
+    background: #d4edda;
+    color: #155724;
+}
+
+.result-value.composite {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.steps {
+    background: #ecf0f1;
+    padding: 15px;
+    border-radius: 6px;
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.steps div {
+    margin: 3px 0;
+}
+
+/* ---------- Info Box ---------- */
+.info-box {
+    background: #e8f4f8;
+    border-left: 4px solid #3498db;
+    padding: 15px;
+    margin: 20px auto;
+    max-width: 700px;
+    text-align: left;
+    border-radius: 4px;
+}
+
+.info-box h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.info-box p {
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+/* ---------- Back Link ---------- */
+a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #3498db;
+    text-decoration: none;
+    background-color: tomato;
+    font-size: 15px;
+    padding: 10px 20px;
+    border-radius: 6px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+    </style>
+</head>
+<body>
+    <h1>Fermat's Primality Test</h1>
+    
+    <form method="POST">
+        <h2>Test Primality</h2>
+        <input type="number" name="number" placeholder="Enter number to test" required min="2">
+        <input type="number" name="iterations" placeholder="Number of iterations (default: 5)" min="1" max="20" value="5">
+        <br>
+        <button type="submit">Test</button>
+    </form>
+
+    {% if result %}
+    <div class="result">
+        <h3 style="color: #2c3e50;">Result:</h3>
+        <div class="result-value {% if 'Prime' in result.status %}prime{% else %}composite{% endif %}">
+            {{ result.status }}
+        </div>
+        
+        <h3 style="color: #2c3e50;">Steps:</h3>
+        <div class="steps">
+            {% for step in result.steps %}
+            <div>{{ step }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <a href="/">Back to Menu</a>
+</body>
+</html>

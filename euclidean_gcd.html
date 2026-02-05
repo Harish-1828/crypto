@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* ---------- Global ---------- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+    text-align: center;
+}
+
+/* ---------- Headings ---------- */
+h1 {
+    margin-top: 40px;
+    font-size: 32px;
+    color: #2c3e50;
+}
+
+h2 {
+    margin-top: 30px;
+    font-size: 26px;
+    color: #34495e;
+}
+
+/* ---------- Container ---------- */
+form {
+    background: #ffffff;
+    width: 70%;
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* ---------- Inputs ---------- */
+input[type="number"] {
+    width: 90%;
+    font-size: 16px;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+input:focus {
+    border-color: #3498db;
+}
+
+/* ---------- Buttons ---------- */
+button {
+    font-size: 16px;
+    padding: 10px 22px;
+    margin: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #ffffff;
+    background-color: #3498db;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+button[value="extended"] {
+    background-color: #9b59b6;
+}
+
+button[value="extended"]:hover {
+    background-color: #8e44ad;
+}
+
+/* ---------- Result ---------- */
+.result {
+    background: #ffffff;
+    width: 70%;
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    text-align: left;
+}
+
+.result h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.steps {
+    background: #ecf0f1;
+    padding: 15px;
+    border-radius: 6px;
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.steps div {
+    margin: 5px 0;
+}
+
+.gcd-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: #27ae60;
+    margin-top: 15px;
+}
+
+/* ---------- Back Link ---------- */
+a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #3498db;
+    text-decoration: none;
+    background-color: tomato;
+    font-size: 15px;
+    padding: 10px 20px;
+    border-radius: 6px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+    </style>
+</head>
+<body>
+    <h1>Euclidean GCD Algorithm</h1>
+    
+    <form method="POST">
+        <h2>Enter Two Numbers</h2>
+        <input type="number" name="num1" placeholder="First number (a)" required>
+        <input type="number" name="num2" placeholder="Second number (b)" required>
+        <br>
+        <button type="submit" name="mode" value="basic">Calculate GCD</button>
+
+    </form>
+
+    {% if result %}
+    <div class="result">
+        <h3>Result:</h3>
+        <div class="gcd-value">{{ result.gcd_text }}</div>
+        
+        {% if result.extended %}
+        <div class="gcd-value">{{ result.extended }}</div>
+        {% endif %}
+        
+        <h3>Steps:</h3>
+        <div class="steps">
+            {% for step in result.steps %}
+            <div>{{ step }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <a href="/">Back to Menu</a>
+</body>
+</html>

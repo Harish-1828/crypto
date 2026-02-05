@@ -87,6 +87,21 @@
             color: #c0392b;
         }
 
+        .steps {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: "Courier New", monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .steps div {
+            margin: 5px 0;
+        }
+
         /* ---------- Back Link ---------- */
         a {
             display: inline-block;
@@ -111,8 +126,16 @@
 </form>
 
 {% if result %}
-<div class="result {% if 'Prime' in result %}prime{% else %}composite{% endif %}">
-    <p>Result: <strong>{{ result }}</strong></p>
+<div class="result {% if 'Prime' in result.status %}prime{% else %}composite{% endif %}">
+    <p>Result: <strong>{{ result.status }}</strong></p>
+    {% if result.steps %}
+    <div class="steps">
+        <h3 style="margin-top: 0; color: #2c3e50;">Steps:</h3>
+        {% for step in result.steps %}
+        <div>{{ step }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
 </div>
 {% endif %}
 

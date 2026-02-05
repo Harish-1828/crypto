@@ -1,0 +1,84 @@
+{
+  "name": "crypto",
+  "path": "e:\\crypto",
+  "type": "directory",
+  "children": [
+    {
+      "name": ".vercelignore",
+      "type": "file",
+      "icon": "📄"
+    },
+    {
+      "name": "affine.html",
+      "type": "file",
+      "icon": "🌐"
+    },
+    {
+      "name": "affine.py",
+      "type": "file",
+      "icon": "🐍"
+    },
+    {
+      "name": "app.py",
+      "type": "file",
+      "icon": "🐍"
+    },
+    {
+      "name": "index.html",
+      "type": "file",
+      "icon": "🌐"
+    },
+    {
+      "name": "miller_rabin.html",
+      "type": "file",
+      "icon": "🌐"
+    },
+    {
+      "name": "miller_rabin.py",
+      "type": "file",
+      "icon": "🐍"
+    },
+    {
+      "name": "playfair.html",
+      "type": "file",
+      "icon": "🌐"
+    },
+    {
+      "name": "playfair.py",
+      "type": "file",
+      "icon": "🐍"
+    },
+    {
+      "name": "requirements.txt",
+      "type": "file",
+      "icon": "📄"
+    },
+    {
+      "name": "style.css",
+      "type": "file",
+      "icon": "🎨"
+    },
+    {
+      "name": "vercel.json",
+      "type": "file",
+      "icon": "⚙️"
+    },
+    {
+      "name": "vigenere.html",
+      "type": "file",
+      "icon": "🌐"
+    },
+    {
+      "name": "HELLO.py",
+      "type": "file",
+      "icon": "🐍"
+    }
+  ],
+  "metadata": {
+    "generated": "2026-01-31T07:52:15.579Z",
+    "generator": "FileTree Pro Extension",
+    "version": "0.2.0",
+    "showIcons": true,
+    "maxDepth": 10
+  }
+}
