@@ -120,16 +120,46 @@ button[value="demo"]:hover {
 }
 
 .steps {
-    background: #ecf0f1;
-    padding: 15px;
-    border-radius: 6px;
+    background: #1e1e2e;
+    padding: 20px 25px;
+    border-radius: 10px;
     font-family: "Courier New", monospace;
-    font-size: 14px;
-    line-height: 1.8;
+    font-size: 15px;
+    line-height: 2;
+    color: #e0e0e0;
+    text-align: left;
 }
 
 .steps div {
-    margin: 3px 0;
+    margin: 2px 0;
+}
+
+.steps .header-line {
+    color: #e67e22;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.steps .formula-line {
+    color: #e0e0e0;
+    font-size: 15px;
+}
+
+.steps .step-line {
+    color: #ffffff;
+    font-size: 15px;
+}
+
+.steps .result-prime {
+    color: #00e676;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.steps .result-composite {
+    color: #f44336;
+    font-weight: bold;
+    font-size: 18px;
 }
 
 /* ---------- Info Box ---------- */
@@ -176,7 +206,6 @@ a:hover {
     <form method="POST">
         <h2>Test Primality</h2>
         <input type="number" name="number" placeholder="Enter number to test" required min="2">
-        <input type="number" name="iterations" placeholder="Number of iterations (default: 5)" min="1" max="20" value="5">
         <br>
         <button type="submit">Test</button>
     </form>
@@ -191,7 +220,19 @@ a:hover {
         <h3 style="color: #2c3e50;">Steps:</h3>
         <div class="steps">
             {% for step in result.steps %}
-            <div>{{ step }}</div>
+                {% if step.startswith('Solution') %}
+                <div class="header-line">{{ step }}</div>
+                {% elif step.startswith('∴') and 'prime' in step.lower() and 'composite' not in step.lower() %}
+                <div class="result-prime">{{ step }}</div>
+                {% elif step.startswith('∴') and 'composite' in step.lower() %}
+                <div class="result-composite">{{ step }}</div>
+                {% elif step == '' %}
+                <div>&nbsp;</div>
+                {% elif 'NOT a multiple' in step %}
+                <div class="result-composite">{{ step }}</div>
+                {% else %}
+                <div class="step-line">{{ step }}</div>
+                {% endif %}
             {% endfor %}
         </div>
     </div>

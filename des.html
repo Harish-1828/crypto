@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>S-DES Encryption</title>
+    <style>
+        .steps-box {
+            background: #1e1e2e;
+            color: #a6e3a1;
+            font-family: 'Courier New', monospace;
+            text-align: left;
+            width: 80%;
+            max-width: 750px;
+            margin: 20px auto;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-size: 15px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        }
+        .steps-box .section-title {
+            color: #f9e2af;
+            font-weight: bold;
+        }
+        .steps-box .highlight {
+            color: #89b4fa;
+        }
+        .steps-box .result-line {
+            color: #f38ba8;
+            font-weight: bold;
+            font-size: 17px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <a class="home-btn" href="/">Home</a>
+    </div>
+    <h2>S-DES Encryption</h2>
+
+    <form method="post">
+        <label for="plaintext">Enter Plaintext (8 bits):</label>
+        <input type="text" id="plaintext" name="plaintext" placeholder="e.g. 10111101" maxlength="8" pattern="[01]{8}" required value="{{ plaintext or '' }}">
+
+        <label for="key">Enter Key (10 bits):</label>
+        <input type="text" id="key" name="key" placeholder="e.g. 1010000010" maxlength="10" pattern="[01]{10}" required value="{{ key or '' }}">
+
+        <button type="submit" name="mode" value="encrypt">Encrypt</button>
+    </form>
+
+    {% if result %}
+    <div class="steps-box">
+        {% for step in result.steps %}
+            {% if step.startswith('===') %}
+<span class="section-title">{{ step }}</span>
+            {% elif step.startswith('Ciphertext') %}
+<span class="result-line">{{ step }}</span>
+            {% elif step.startswith('K1:') or step.startswith('K2:') %}
+<span class="highlight">{{ step }}</span>
+            {% elif step == '' %}
+
+            {% else %}
+{{ step }}
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <br>
+    <a href="/">Back</a>
+</body>
+</html>

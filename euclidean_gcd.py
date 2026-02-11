@@ -5,24 +5,26 @@ def euclidean_gcd(a, b):
     """
     steps = []
     original_a, original_b = a, b
-    
+
     # Ensure a >= b
     if a < b:
         a, b = b, a
-    
-    steps.append(f"Finding GCD of {original_a} and {original_b}")
-    
-    if a < b:
-        steps.append(f"Swapping: a = {a}, b = {b}")
-    
+
+    steps.append(f"Here a={a}, b={b}")
+    steps.append("")
+    steps.append(f"GCD (a, b) = GCD (b, a mod b)")
+    steps.append("")
+
     while b != 0:
-        quotient = a // b
         remainder = a % b
-        steps.append(f"{a} = {b} × {quotient} + {remainder}")
+        steps.append(f"GCD ({a}, {b})    = GCD ({b}, {a} mod {b})    = GCD({b}, {remainder})")
         a, b = b, remainder
-    
+
+    # last line shows = gcd
+    steps[-1] = steps[-1] + f"    = {a}"
+    steps.append("")
     steps.append(f"GCD = {a}")
-    
+
     return a, steps
 
 

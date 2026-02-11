@@ -4,6 +4,8 @@ import affine
 import vigenere
 import euclidean_gcd
 import fermat
+import des
+import aes
 
 def is_prime(number):
     """Miller-Rabin primality test"""
@@ -39,7 +41,12 @@ def is_prime(number):
     
     steps.append(f"Step 3:")
     steps.append(f"b₀ = {a}^{m} (mod {number}) = {b}")
-    steps.append(f"Is b₀ = ±1 (mod {number})? {'YES' if (b == 1 or b == number - 1) else 'NO'}")
+    if b == 1:
+        steps.append(f"b₀ = +1 (mod {number}) → YES")
+    elif b == number - 1:
+        steps.append(f"b₀ = -1 (mod {number}) → YES")
+    else:
+        steps.append(f"b₀ = {b} (mod {number}) → NOT +1 or -1")
 
     if b == 1 or b == number - 1:
         steps.append("")
@@ -53,7 +60,12 @@ def is_prime(number):
         b = (b * b) % number
         steps.append(f"b_{idx+1} = {prev_b}² (mod {number})")
         steps.append(f"b_{idx+1} = {b}")
-        steps.append(f"Is b_{idx+1} = ±1 (mod {number})? {'YES' if (b == 1 or b == number - 1) else 'NO'}")
+        if b == 1:
+            steps.append(f"b_{idx+1} = +1 (mod {number}) → YES")
+        elif b == number - 1:
+            steps.append(f"b_{idx+1} = -1 (mod {number}) → YES")
+        else:
+            steps.append(f"b_{idx+1} = {b} (mod {number}) → NOT +1 or -1")
         
         if b == number - 1:
             steps.append("")
@@ -192,12 +204,8 @@ def fermat_page():
     if request.method == "POST":
         try:
             n = int(request.form.get("number", 0))
-            k = int(request.form.get("iterations", 5))
             
-            if k < 1 or k > 20:
-                k = 5
-            
-            prime_result, steps = fermat.is_prime(n, k)
+            prime_result, steps = fermat.is_prime(n)
             result = {
                 "status": prime_result,
                 "steps": steps
@@ -209,6 +217,69 @@ def fermat_page():
             }
     
     return render_template("fermat.html", result=result)
+
+@app.route("/des", methods=["GET", "POST"])
+def des_page():
+    result = None
+    plaintext = ""
+    key = ""
+    if request.method == "POST":
+        plaintext = request.form.get("plaintext", "")
+        key = request.form.get("key", "")
+        try:
+            ciphertext, steps = des.des_encrypt(plaintext, key)
+            result = {
+                "ciphertext": ciphertext,
+                "steps": steps
+            }
+        except Exception as e:
+            result = {
+                "ciphertext": "Error",
+                "steps": [str(e)]
+            }
+    return render_template("des.html", result=result, plaintext=plaintext, key=key)
+
+@app.route("/aes", methods=["GET", "POST"])
+def aes_page():
+    result = None
+    pt_vals = None
+    key_vals = None
+    rounds = 1
+    if request.method == "POST":
+        try:
+            # Parse plaintext matrix
+            pt = []
+            for i in range(4):
+                row = []
+                for j in range(4):
+                    row.append(request.form.get(f"pt_{i}_{j}", "00").upper())
+                pt.append(row)
+            pt_vals = pt
+
+            # Parse key matrix
+            key = []
+            for i in range(4):
+                row = []
+                for j in range(4):
+                    row.append(request.form.get(f"key_{i}_{j}", "00").upper())
+                key.append(row)
+            key_vals = key
+
+            rounds = int(request.form.get("rounds", 1))
+            if rounds < 1:
+                rounds = 1
+            if rounds > 14:
+                rounds = 14
+
+            state, steps = aes.aes_encrypt(pt, key, rounds)
+            result = {
+                "steps": steps
+            }
+        except Exception as e:
+            result = {
+                "steps": [f"Error: {str(e)}"]
+            }
+    return render_template("aes.html", result=result, pt_vals=pt_vals, key_vals=key_vals, rounds=rounds)
 
 if __name__ == "__main__":
     # Run on port 5500 as requested
