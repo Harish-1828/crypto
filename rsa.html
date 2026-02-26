@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>RSA Encryption</title>
+    <style>
+        .steps-box {
+            background: #1e1e2e;
+            color: #a6e3a1;
+            font-family: 'Courier New', monospace;
+            text-align: left;
+            width: 80%;
+            max-width: 750px;
+            margin: 20px auto;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-size: 15px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        }
+        .steps-box .key-line {
+            color: #89b4fa;
+            font-weight: bold;
+        }
+        .steps-box .result-line {
+            color: #f38ba8;
+            font-weight: bold;
+            font-size: 17px;
+        }
+        .steps-box .prime-ok {
+            color: #a6e3a1;
+        }
+        .steps-box .prime-fail {
+            color: #f38ba8;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <a class="home-btn" href="/">Home</a>
+    </div>
+    <h2>RSA Encryption / Decryption</h2>
+
+    <form method="post">
+        <label for="p">Enter first prime (p):</label>
+        <input type="number" id="p" name="p" placeholder="e.g. 7" required min="2" value="{{ p_val or '' }}">
+
+        <label for="q">Enter second prime (q):</label>
+        <input type="number" id="q" name="q" placeholder="e.g. 11" required min="2" value="{{ q_val or '' }}">
+
+        <label for="m">Enter message (number):</label>
+        <input type="number" id="m" name="m" placeholder="e.g. 4" required min="0" value="{{ m_val or '' }}">
+
+        <br><br>
+        <button type="submit" name="mode" value="encrypt" style="background-color: #27ae60;">Encrypt / Decrypt</button>
+    </form>
+
+    {% if result %}
+    <div class="steps-box">
+        {% for step in result.steps %}
+            {% if 'Public Key' in step or 'Private Key' in step %}
+<span class="key-line">{{ step }}</span>
+            {% elif 'Encrypted:' in step or 'Decrypted:' in step %}
+<span class="result-line">{{ step }}</span>
+            {% elif '✓' in step %}
+<span class="prime-ok">{{ step }}</span>
+            {% elif '✗' in step %}
+<span class="prime-fail">{{ step }}</span>
+            {% elif step == '' %}
+
+            {% else %}
+{{ step }}
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <br>
+    <a href="/">Back</a>
+</body>
+</html>

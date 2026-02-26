@@ -6,6 +6,7 @@ import euclidean_gcd
 import fermat
 import des
 import aes
+import rsa
 
 def is_prime(number):
     """Miller-Rabin primality test"""
@@ -280,6 +281,23 @@ def aes_page():
                 "steps": [f"Error: {str(e)}"]
             }
     return render_template("aes.html", result=result, pt_vals=pt_vals, key_vals=key_vals, rounds=rounds)
+
+@app.route("/rsa", methods=["GET", "POST"])
+def rsa_page():
+    result = None
+    p_val = ""
+    q_val = ""
+    m_val = ""
+    if request.method == "POST":
+        try:
+            p_val = int(request.form.get("p", 0))
+            q_val = int(request.form.get("q", 0))
+            m_val = int(request.form.get("m", 0))
+            res, steps = rsa.rsa_encrypt_decrypt(p_val, q_val, m_val)
+            result = {"steps": steps}
+        except Exception as e:
+            result = {"steps": [f"Error: {str(e)}"]}
+    return render_template("rsa.html", result=result, p_val=p_val, q_val=q_val, m_val=m_val)
 
 if __name__ == "__main__":
     # Run on port 5500 as requested
