@@ -7,6 +7,7 @@ import fermat
 import des
 import aes
 import rsa
+import diffie_hellman
 
 def is_prime(number):
     """Miller-Rabin primality test"""
@@ -298,6 +299,41 @@ def rsa_page():
         except Exception as e:
             result = {"steps": [f"Error: {str(e)}"]}
     return render_template("rsa.html", result=result, p_val=p_val, q_val=q_val, m_val=m_val)
+
+@app.route("/diffie_hellman", methods=["GET", "POST"])
+def diffie_hellman_page():
+    result = None
+    P_val = ""
+    G_val = ""
+    a_val = ""
+    b_val = ""
+    
+    # Support URL parameters for examples
+    if request.method == "GET" and request.args:
+        try:
+            P_val = int(request.args.get("P", 0))
+            G_val = int(request.args.get("G", 0))
+            a_val = int(request.args.get("a", 0))
+            b_val = int(request.args.get("b", 0))
+            
+            if P_val and G_val and a_val and b_val:
+                res, steps = diffie_hellman.diffie_hellman_exchange(P_val, G_val, a_val, b_val)
+                result = {"steps": steps}
+        except Exception as e:
+            result = {"steps": [f"Error: {str(e)}"]}
+    
+    if request.method == "POST":
+        try:
+            P_val = int(request.form.get("P", 0))
+            G_val = int(request.form.get("G", 0))
+            a_val = int(request.form.get("a", 0))
+            b_val = int(request.form.get("b", 0))
+            res, steps = diffie_hellman.diffie_hellman_exchange(P_val, G_val, a_val, b_val)
+            result = {"steps": steps}
+        except Exception as e:
+            result = {"steps": [f"Error: {str(e)}"]}
+    
+    return render_template("diffie_hellman.html", result=result, P_val=P_val, G_val=G_val, a_val=a_val, b_val=b_val)
 
 if __name__ == "__main__":
     # Run on port 5500 as requested

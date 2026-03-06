@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Diffie-Hellman Key Exchange</title>
+    <style>
+        .steps-box {
+            background: #1e1e2e;
+            color: #cdd6f4;
+            font-family: 'Courier New', monospace;
+            text-align: left;
+            width: 85%;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        }
+        .steps-box .header-line {
+            color: #f9e2af;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        .steps-box .step-title {
+            color: #89b4fa;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        .steps-box .success-line {
+            color: #a6e3a1;
+            font-weight: bold;
+        }
+        .steps-box .warning-line {
+            color: #fab387;
+            font-weight: bold;
+        }
+        .steps-box .error-line {
+            color: #f38ba8;
+            font-weight: bold;
+        }
+        .steps-box .note-line {
+            color: #89dceb;
+        }
+        
+        .info-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px 20px;
+            margin: 20px auto;
+            width: 70%;
+            max-width: 700px;
+            border-radius: 5px;
+            text-align: left;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .info-box h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .info-box ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .info-box li {
+            margin: 5px 0;
+        }
+        
+        input[type="number"] {
+            width: 90%;
+            font-size: 16px;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        
+        input[type="number"]:focus {
+            border-color: #3498db;
+        }
+        
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-align: left;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        button[type="submit"] {
+            background-color: #3498db;
+            margin-top: 20px;
+        }
+        
+        button[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+        
+        .example-link {
+            display: inline-block;
+            margin: 10px;
+            padding: 8px 16px;
+            background-color: #95a5a6;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .example-link:hover {
+            background-color: #7f8c8d;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <a class="home-btn" href="/">Home</a>
+    </div>
+    <h2>Diffie-Hellman Key Exchange</h2>
+
+    <div class="info-box">
+        <h3>📚 How it works:</h3>
+        <ul>
+            <li><strong>P</strong> = A large prime number (public)</li>
+            <li><strong>G</strong> = A primitive root of P (public)</li>
+            <li><strong>a</strong> = Alice's private key (secret)</li>
+            <li><strong>b</strong> = Bob's private key (secret)</li>
+        </ul>
+        <p>Both Alice and Bob will compute the same shared secret without ever transmitting it!</p>
+    </div>
+
+    <form method="post">
+        <label for="P">Enter prime number P (public):</label>
+        <input type="number" id="P" name="P" placeholder="e.g. 23" required min="2" value="{{ P_val or '' }}">
+
+        <label for="G">Enter primitive root G (public):</label>
+        <input type="number" id="G" name="G" placeholder="e.g. 5" required min="2" value="{{ G_val or '' }}">
+
+        <label for="a">Enter Alice's private key (a):</label>
+        <input type="number" id="a" name="a" placeholder="e.g. 4" required min="1" value="{{ a_val or '' }}">
+
+        <label for="b">Enter Bob's private key (b):</label>
+        <input type="number" id="b" name="b" placeholder="e.g. 3" required min="1" value="{{ b_val or '' }}">
+
+        <br><br>
+        <button type="submit" name="mode" value="exchange">Perform Key Exchange</button>
+    </form>
+
+    <div style="margin-top: 20px;">
+        <p style="color: #7f8c8d; font-size: 14px;">Try these examples:</p>
+        <a href="/diffie_hellman?P=23&G=5&a=4&b=3" class="example-link">Example 1: Small values</a>
+        <a href="/diffie_hellman?P=467&G=2&a=12&b=19" class="example-link">Example 2: Larger prime</a>
+    </div>
+
+    {% if result %}
+    <div class="steps-box">
+        {% for step in result.steps %}
+            {% if '===' in step or 'DIFFIE-HELLMAN' in step %}
+<span class="header-line">{{ step }}</span>
+            {% elif 'STEP' in step and ':' in step %}
+<span class="step-title">{{ step }}</span>
+            {% elif '✓' in step or 'SUCCESS' in step %}
+<span class="success-line">{{ step }}</span>
+            {% elif '⚠' in step or 'WARNING' in step %}
+<span class="warning-line">{{ step }}</span>
+            {% elif '✗' in step or 'ERROR' in step %}
+<span class="error-line">{{ step }}</span>
+            {% elif 'SECURITY NOTE' in step or 'secret' in step.lower() %}
+<span class="note-line">{{ step }}</span>
+            {% elif step == '' %}
+
+            {% else %}
+{{ step }}
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <br>
+</body>
+</html>
