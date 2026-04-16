@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Manual SHA-1</title>
+    <style>
+        .steps-box {
+            background: #1e1e2e;
+            color: #a6e3a1;
+            font-family: 'Courier New', monospace;
+            text-align: left;
+            width: 85%;
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+        .steps-box .section-title {
+            color: #f9e2af;
+            font-weight: bold;
+        }
+        .steps-box .hash-line {
+            color: #89b4fa;
+            font-weight: bold;
+        }
+        .steps-box .verify-line {
+            color: #f38ba8;
+            font-weight: bold;
+        }
+        .steps-box .ok-line {
+            color: #a6e3a1;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <a class="home-btn" href="/">Home</a>
+    </div>
+
+    <h2>Manual SHA-1 (with intermediate results)</h2>
+
+    <form method="post">
+        <label for="message">Enter message:</label>
+        <input type="text" id="message" name="message" placeholder="Enter text to hash" required value="{{ message or '' }}">
+        <button type="submit" name="mode" value="hash">Generate SHA-1</button>
+    </form>
+
+    {% if result %}
+    <div class="steps-box">
+        {% for step in result.steps %}
+            {% if step.startswith('===') or step.startswith('Initial hash values') or step.startswith('First 16 words') or step.startswith('Updated hash') %}
+<span class="section-title">{{ step }}</span>
+            {% elif step.startswith('Final SHA-1 Hash') %}
+<span class="hash-line">{{ step }}</span>
+            {% elif step.startswith('Verified') %}
+<span class="verify-line">{{ step }}</span>
+            {% elif step.startswith('Match') %}
+<span class="ok-line">{{ step }}</span>
+            {% elif step == '' %}
+
+            {% else %}
+{{ step }}
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <br>
+    <a href="/">Back</a>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>AES-CMAC</title>
+    <style>
+        .steps-box {
+            background: #1e1e2e;
+            color: #a6e3a1;
+            font-family: 'Courier New', monospace;
+            text-align: left;
+            width: 85%;
+            max-width: 950px;
+            margin: 20px auto;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+        .steps-box .title-line {
+            color: #f9e2af;
+            font-weight: bold;
+        }
+        .steps-box .final-line {
+            color: #89b4fa;
+            font-weight: bold;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <a class="home-btn" href="/">Home</a>
+    </div>
+
+    <h2>AES-CMAC (step-by-step)</h2>
+
+    <form method="post">
+        <label for="key">Enter key (16/24/32 chars):</label>
+        <input type="text" id="key" name="key" placeholder="Example: 1234567890abcdef" required value="{{ key or '' }}">
+
+        <label for="message">Enter message:</label>
+        <input type="text" id="message" name="message" placeholder="Enter message" required value="{{ message or '' }}">
+
+        <button type="submit" name="mode" value="compute">Generate CMAC</button>
+    </form>
+
+    {% if result %}
+    <div class="steps-box">
+        {% for step in result.steps %}
+            {% if step.startswith('Original Key') or step.startswith('Message') %}
+<span class="title-line">{{ step }}</span>
+            {% elif step.startswith('[10] CMAC Tag') %}
+<span class="final-line">{{ step }}</span>
+            {% elif step == '' %}
+
+            {% else %}
+{{ step }}
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <br>
+    <a href="/">Back</a>
+</body>
+</html>

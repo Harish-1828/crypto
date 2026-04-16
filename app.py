@@ -8,6 +8,9 @@ import des
 import aes
 import rsa
 import diffie_hellman
+import sha1_manual
+import hmac_sha1
+import cmac_aes
 
 def is_prime(number):
     """Miller-Rabin primality test"""
@@ -334,6 +337,70 @@ def diffie_hellman_page():
             result = {"steps": [f"Error: {str(e)}"]}
     
     return render_template("diffie_hellman.html", result=result, P_val=P_val, G_val=G_val, a_val=a_val, b_val=b_val)
+
+@app.route("/sha1_manual", methods=["GET", "POST"])
+def sha1_manual_page():
+    result = None
+    message = ""
+
+    if request.method == "POST":
+        try:
+            message = request.form.get("message", "")
+            if not message:
+                message = "Hello"
+
+            manual_hash, verify_hash, steps = sha1_manual.manual_sha1(message)
+            result = {
+                "manual_hash": manual_hash,
+                "verify_hash": verify_hash,
+                "steps": steps,
+            }
+        except Exception as e:
+            result = {"steps": [f"Error: {str(e)}"]}
+
+    return render_template("sha1_manual.html", result=result, message=message)
+
+@app.route("/hmac_sha1", methods=["GET", "POST"])
+def hmac_sha1_page():
+    result = None
+    key = ""
+    message = ""
+
+    if request.method == "POST":
+        try:
+            key = request.form.get("key", "")
+            message = request.form.get("message", "")
+
+            final_hash, steps = hmac_sha1.hmac_step_by_step(key, message)
+            result = {
+                "final_hash": final_hash,
+                "steps": steps,
+            }
+        except Exception as e:
+            result = {"steps": [f"Error: {str(e)}"]}
+
+    return render_template("hmac_sha1.html", result=result, key=key, message=message)
+
+@app.route("/cmac_aes", methods=["GET", "POST"])
+def cmac_aes_page():
+    result = None
+    key = ""
+    message = ""
+
+    if request.method == "POST":
+        try:
+            key = request.form.get("key", "")
+            message = request.form.get("message", "")
+
+            tag, steps = cmac_aes.cmac_step_by_step(key, message)
+            result = {
+                "tag": tag,
+                "steps": steps,
+            }
+        except Exception as e:
+            result = {"steps": [f"Error: {str(e)}"]}
+
+    return render_template("cmac_aes.html", result=result, key=key, message=message)
 
 if __name__ == "__main__":
     # Run on port 5500 as requested
